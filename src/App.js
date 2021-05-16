@@ -18,7 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-
+import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 import HomeIcon from '@material-ui/icons/Home';
 import ExploreIcon from '@material-ui/icons/Explore';
 import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
@@ -38,6 +38,9 @@ import FlagIcon from '@material-ui/icons/Flag';
 import HelpIcon from '@material-ui/icons/Help';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 
 import MicIcon from '@material-ui/icons/Mic';
 import AppsIcon from '@material-ui/icons/Apps';
@@ -45,10 +48,14 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 
 import { Avatar, Icon, SvgIcon, TextField, Button, ButtonGroup, IconButton, Tooltip, Grid } from '@material-ui/core'
-import { SportsBasketball } from '@material-ui/icons';
+
+
+
+
 
 import PreviewCard from './components/PreviewCard.jsx'
-
+import { ReactComponent as StreamingIcon } from './icons/streaming_icon.svg'
+import { PlaylistPlay } from '@material-ui/icons';
 const routeGroups = [
   {
     name: null, items: [
@@ -58,21 +65,48 @@ const routeGroups = [
     ]
   },
   {
-    name: null, items: [
+    name: null, max: 5, items: [
       { name: 'Bibliotecas', icon: <VideoLibraryIcon />, onClose: true },
       { name: 'Historial', icon: <HistoryIcon /> },
       { name: 'Mis videos', icon: <PlayCircleOutlineIcon /> },
       { name: 'Ver más tarde', icon: <WatchLaterIcon /> },
       { name: 'Videos que me gustan', icon: <ThumbUpIcon /> },
+      { name: 'Lista de reproducción', icon: <PlaylistPlay /> }
     ]
   },
   {
-    name: "SUBSCRIPCIONES", items: [
-      { name: 'Kiko Palomares', icon: <Avatar alt="Remy Sharp" src="https://yt3.ggpht.com/ytc/AAUvwnhl30-099hHdQ9KmQSG1ZZN6ReuwHC1zG3EC6m65A=s88-c-k-c0x00ffffff-no-rj" /> },
-      { name: 'Sofia Web', icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnimRjgF1uVE0ukK6xy3h9HGMHMjKy6QzmKOUNeCJA=s88-c-k-c0x00ffffff-no-rj' /> },
-      { name: 'The Flutter way', icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwngOS8ETkWL7RrYwfXX2hMdJ7VjO-juYYl8F1OG1=s88-c-k-c0x00ffffff-no-rj' /> },
-      { name: 'Ed Team', icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhRL1PzyIR4qftWnofOtsyvheGq_wQpMe1XVOJ7YQ=s88-c-k-c0x00ffffff-no-rj' /> },
-      { name: 'Fazt', icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhgqDwiewt8bds92auC2W30pzE70V03dTW7_h8tvQ=s88-c-k-c0x00ffffff-no-rj' /> }
+    name: "SUBSCRIPCIONES", max: 7, items: [
+      {
+        name: 'Kiko Palomares', streaming: true,
+        icon: <Avatar alt="Remy Sharp" src="https://yt3.ggpht.com/ytc/AAUvwnhl30-099hHdQ9KmQSG1ZZN6ReuwHC1zG3EC6m65A=s88-c-k-c0x00ffffff-no-rj" />
+      },
+      {
+        name: 'Sofia Web',
+        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnimRjgF1uVE0ukK6xy3h9HGMHMjKy6QzmKOUNeCJA=s88-c-k-c0x00ffffff-no-rj' />
+      },
+      {
+        name: 'The Flutter way',
+        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwngOS8ETkWL7RrYwfXX2hMdJ7VjO-juYYl8F1OG1=s88-c-k-c0x00ffffff-no-rj' />
+      },
+      {
+        name: 'Ed Team',
+        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhRL1PzyIR4qftWnofOtsyvheGq_wQpMe1XVOJ7YQ=s88-c-k-c0x00ffffff-no-rj' />
+      },
+      {
+        name: 'Fazt', newContent: true,
+        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhgqDwiewt8bds92auC2W30pzE70V03dTW7_h8tvQ=s88-c-k-c0x00ffffff-no-rj' />,
+      },
+      {
+        name: 'AristiDevs', streaming: true,
+        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhXywyYrVckna4WxxOWfQLn_Ki2FhmHNWb5HHpL=s88-c-k-c0x00ffffff-no-rj' />
+      },
+      {
+        name: 'MoureDev', newContent: true,
+        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwniUE19__jnSP8NH1LblvE5Ac5ADuDfcDMh9F-v7Bg=s88-c-k-c0x00ffffff-no-rj' />
+      },
+      { name:'Duke Doks',
+        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhmw1s-0Qh89Gy8U2u4M5JSh5rtIeaRMb2cNsUwsw=s88-c-k-c0x00ffffff-no-rj' />  
+      }
     ]
   },
   {
@@ -172,6 +206,11 @@ const useStyles = makeStyles(() => ({
     },
     ['& slide']: {
       borderRight: 'none'
+    },
+  },
+  '@media screen and (max-width: 600px)': {
+    drawer: {
+      display: 'none',
     },
   },
   drawerOpen: {
@@ -297,12 +336,11 @@ function App() {
               <img className={classes.imageIcon} src={"images/youtube-icon.svg"} />
               <div>
                 <ButtonGroup disableElevation>
-                  <TextField className={classes.searchField} 
-                  id="searchField" 
-                  color="secondary"
-                  placeholder="Buscar"
+                  <TextField className={classes.searchField}
+                    id="searchField"
+                    color="secondary"
+                    placeholder="Buscar"
                     variant="outlined"
-                  // InputProps={{ classes: { input: classes.searchField } }}
                   />
                   <Button className={classes.searchButton} variant="contained" >
                     <SearchIcon />
@@ -360,31 +398,13 @@ function App() {
         >
           <div className={classes.toolbar}>
           </div>
-
           <List>
-            {routeGroups.map(routeGroup => (
-              <>
-                {(routeGroup.name && open) && <Typography className={classes.text} variant="p">{routeGroup.name}</Typography>}
-
-
-                {
-                  routeGroup.items.map((route, index) => (
-                    (open || route.onClose) &&
-                    <Tooltip title={open ? '' : route.name}>
-                      <ListItem button key={route.name}>
-                        <ListItemIcon>{route.icon && route.icon}</ListItemIcon>
-                        <ListItemText primary={route.name} />
-                      </ListItem>
-                    </Tooltip>
-                  ))
-                }
-                {open && <Divider className={classes.divider} />}
-
-
-              </>
-            ))}
+            {
+              routeGroups.map(routeGroup => (
+                <NavItems routeGroup={routeGroup} open={open} />
+              ))
+            }
           </List>
-
           {
             open &&
             <div className={classes.drawerContainer}>
@@ -404,23 +424,23 @@ function App() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
 
-          <Grid xs={12} direction='row' container spacing={2}  justify="flex-start">
-            { 
-              [...Array(10).keys()].map( item => 
-              <Grid item xl={3} lg={4} md={4} sm={6} xs={12} >
-                <PreviewCard 
-                  videoImg="https://i.ytimg.com/vi/nsHRc8tUIK0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-Te-F216hloej-awOneOVkI-WlQ"
-                  time="3:12"
-                  progress={0}
-                  title="OMIDO - LSD (ft. palfii) (Official Music Video)"
-                  channelName="Trap Station"
-                  channelImg="https://yt3.ggpht.com/ytc/AAUvwni2J7CPzmLvcuURRHJLqF5JRa3olKu-rrDu1y_TUg=s68-c-k-c0x00ffffff-no-rj"
-                  channelUrl="https://www.youtube.com/user/TRAPSTATlON"
-                  timeAgo="1 año"
-                  verified
-                  views="7,2M"
-                />
-                </Grid>) 
+          <Grid xs={12} direction='row' container spacing={2} justify="flex-start">
+            {
+              [...Array(10).keys()].map(item =>
+                <Grid item xl={3} lg={4} md={4} sm={6} xs={12} >
+                  <PreviewCard
+                    videoImg="https://i.ytimg.com/vi/nsHRc8tUIK0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-Te-F216hloej-awOneOVkI-WlQ"
+                    time="3:12"
+                    progress={0}
+                    title="OMIDO - LSD (ft. palfii) (Official Music Video)"
+                    channelName="Trap Station"
+                    channelImg="https://yt3.ggpht.com/ytc/AAUvwni2J7CPzmLvcuURRHJLqF5JRa3olKu-rrDu1y_TUg=s68-c-k-c0x00ffffff-no-rj"
+                    channelUrl="https://www.youtube.com/user/TRAPSTATlON"
+                    timeAgo="1 año"
+                    verified
+                    views="7,2M"
+                  />
+                </Grid>)
             }
 
           </Grid>
@@ -432,3 +452,56 @@ function App() {
 }
 
 export default App;
+
+
+function NavItems({ open, routeGroup }) {
+  const [showingAll, setShowingAll] = React.useState(false)
+  const classes = useStyles()
+
+  const maxItems = routeGroup.max || Number.POSITIVE_INIFINITY
+  const overItems = routeGroup.items.length - maxItems
+
+  return (
+
+    <>
+      {(routeGroup.name && open) && <Typography className={classes.text} variant="p">{routeGroup.name}</Typography>}
+
+      {
+        routeGroup.items.map((route, index) => (
+          (open || route.onClose) &&
+          <Tooltip title={open ? '' : route.name}>
+            <ListItem
+              style={{ display: (index + 1 > maxItems) && (!showingAll) ? 'none' : 'flex' }}
+              button
+              key={route.name}>
+              <ListItemIcon>{route.icon && route.icon}</ListItemIcon>
+              <ListItemText >{route.name}</ListItemText>
+              {
+                (route.streaming || route.newContent) &&
+                <ListItemIcon style={{ justifyContent: 'center' }}>
+                  <SvgIcon
+                    fontSize="small"
+                    color={route.streaming ? 'primary' : 'secondary'}
+                    component={route.streaming ? StreamingIcon : FiberManualRecordIcon}
+                  >
+                  </SvgIcon>
+                </ListItemIcon>
+              }
+
+            </ListItem>
+          </Tooltip>
+        ))
+      }
+      {
+        (open && overItems > 0) &&
+        <ListItem button onClick={() => { setShowingAll(!showingAll) }} >
+          <ListItemIcon>{showingAll ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
+          <ListItemText  primaryTypographyProps={{noWrap:true}} primary={"Mostrar " + (showingAll ? " menos" : overItems.toString() + " más")}/>
+        </ListItem>
+      }
+
+      {open && <Divider className={classes.divider} />}
+    </>
+  )
+
+}
