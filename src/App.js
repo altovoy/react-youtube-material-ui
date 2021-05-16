@@ -5,7 +5,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,13 +14,10 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+
 
 import HomeIcon from '@material-ui/icons/Home';
 import ExploreIcon from '@material-ui/icons/Explore';
@@ -31,32 +28,38 @@ import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
 import LiveTvIcon from '@material-ui/icons/LiveTv';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball';
-
-
 import HistoryIcon from '@material-ui/icons/History';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import SearchIcon from '@material-ui/icons/Search';
+import SettingsIcon from '@material-ui/icons/Settings';
+import FlagIcon from '@material-ui/icons/Flag';
+import HelpIcon from '@material-ui/icons/Help';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+
+
 import MicIcon from '@material-ui/icons/Mic';
 import AppsIcon from '@material-ui/icons/Apps';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 
-import { Avatar, Icon, SvgIcon, TextField, Button, ButtonGroup, IconButton } from '@material-ui/core'
+import { Avatar, Icon, SvgIcon, TextField, Button, ButtonGroup, IconButton, Tooltip, Grid } from '@material-ui/core'
 import { SportsBasketball } from '@material-ui/icons';
+
+import PreviewCard from './components/PreviewCard.jsx'
 
 const routeGroups = [
   {
     name: null, items: [
-      { name: 'Inicio', icon: <HomeIcon />, onClose:true },
-      { name: 'Explorar', icon: <ExploreIcon />,  onClose:true},
-      { name: 'Subscripciones', icon: <SubscriptionsIcon />, onClose:true },
+      { name: 'Inicio', icon: <HomeIcon />, onClose: true },
+      { name: 'Explorar', icon: <ExploreIcon />, onClose: true },
+      { name: 'Subscripciones', icon: <SubscriptionsIcon />, onClose: true },
     ]
   },
   {
     name: null, items: [
-      { name: 'Bibliotecas', icon: <VideoLibraryIcon />, onClose:true },
+      { name: 'Bibliotecas', icon: <VideoLibraryIcon />, onClose: true },
       { name: 'Historial', icon: <HistoryIcon /> },
       { name: 'Mis videos', icon: <PlayCircleOutlineIcon /> },
       { name: 'Ver más tarde', icon: <WatchLaterIcon /> },
@@ -74,15 +77,43 @@ const routeGroups = [
   },
   {
     name: "MÁS DE YOUTUBE", items: [
-    {name: 'Youtube Premium', icon: <YouTubeIcon/>},
-    {name: 'Videojuegos', icon: <VideogameAssetIcon/>},
-    {name: 'Directo', icon: <LiveTvIcon />},
-    {name: 'Aprendizaje', icon: <EmojiObjectsIcon/>},
-    {name: 'Deportes', icon: <SportsBasketballIcon/>}
+      { name: 'Youtube Premium', icon: <YouTubeIcon /> },
+      { name: 'Videojuegos', icon: <VideogameAssetIcon /> },
+      { name: 'Directo', icon: <LiveTvIcon /> },
+      { name: 'Aprendizaje', icon: <EmojiObjectsIcon /> },
+      { name: 'Deportes', icon: <SportsBasketballIcon /> }
+    ]
+  },
+  {
+    name: null, items: [
+      { name: 'Configuración', icon: <SettingsIcon /> },
+      { name: 'Historial de denuncias', icon: <FlagIcon /> },
+      { name: 'Ayuda', icon: <HelpIcon /> },
+      { name: 'Enviar sugerencias', icon: <AnnouncementIcon /> },
     ]
   }
-
 ]
+
+const footer = [
+  [
+    { name: 'Información', url: 'https://www.youtube.com/about/' },
+    { name: 'Prensa', url: 'https://www.youtube.com/about/press/' },
+    { name: 'Derechos de autor', url: 'https://www.youtube.com/about/copyright/' },
+    { name: 'Contactar', url: 'https://www.youtube.com/t/contact_us/' },
+    { name: 'Creadores', url: 'https://www.youtube.com/creators/' },
+    { name: 'Publicidad', url: 'https://www.youtube.com/ads/' },
+    { name: 'Desarrolladores', url: 'https://developers.google.com/youtube' }
+  ],
+  [
+    { name: 'Términos', url: 'https://www.youtube.com/t/terms' },
+    { name: 'Privacidad', url: 'https://policies.google.com/privacy?hl=es' },
+    { name: 'Política y seguridad', url: 'https://policies.google.com/privacy?hl=es' },
+    { name: 'Cómo funciona YouTube', url: 'https://www.youtube.com/howyoutubeworks?utm_campaign=ytgen&utm_source=ythp&utm_medium=LeftNav&utm_content=txt&u=https%3A%2F%2Fwww.youtube.com%2Fhowyoutubeworks%3Futm_source%3Dythp%26utm_medium%3DLeftNav%26utm_campaign%3Dytgen' },
+    { name: 'Probar funciones nuevas', url: 'https://www.youtube.com/new' }
+  ]
+]
+
+
 
 const drawerWidth = 260;
 
@@ -112,6 +143,14 @@ const useStyles = makeStyles(() => ({
     top: 0,
     left: 0,
 
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   toolbar: {
     display: 'flex',
@@ -203,18 +242,27 @@ const useStyles = makeStyles(() => ({
   text: {
     margin: '5% 5%',
     display: 'block'
-  }, 
+  },
   divider: {
     margin: '2% 5% 3% 0'
+  },
+  a: {
+    color: "#929292",
+    fontWeight: '600',
+    textDecoration: 'none',
+    display: 'block'
+  },
+  drawerContainer: { margin: '5% 16px' },
+  chipsContainer: {
+    height: '30px'
   }
-
 }));
 
 
 
 
 function App() {
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
 
@@ -249,7 +297,10 @@ function App() {
               <img className={classes.imageIcon} src={"images/youtube-icon.svg"} />
               <div>
                 <ButtonGroup disableElevation>
-                  <TextField className={classes.searchField} id="outlined-basic" placeholder="Buscar"
+                  <TextField className={classes.searchField} 
+                  id="searchField" 
+                  color="secondary"
+                  placeholder="Buscar"
                     variant="outlined"
                   // InputProps={{ classes: { input: classes.searchField } }}
                   />
@@ -258,27 +309,39 @@ function App() {
                   </Button>
 
                 </ButtonGroup>
-                <IconButton>
-                  <MicIcon />
-                </IconButton>
+                <Tooltip title="Haz búsquedas por voz">
+                  <IconButton>
+                    <MicIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
 
-              <div>
-                <IconButton>
-                  <VideoCallIcon />
-                </IconButton>
-
-                <IconButton>
-                  <AppsIcon />
-                </IconButton>
-
-                <IconButton>
-                  <NotificationsIcon />
-                </IconButton>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Tooltip title="Crear">
+                  <IconButton>
+                    <VideoCallIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Aplicaciones de YouTube">
+                  <IconButton>
+                    <AppsIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Notificaciones">
+                  <IconButton>
+                    <NotificationsIcon />
+                  </IconButton>
+                </Tooltip>
+                <Avatar>E</Avatar>
               </div>
             </div>
 
           </Toolbar>
+
+          {
+            //<div className={clsx(classes.chipsContainer, {[classes.appBarShift]: open})} />
+          }
+
         </AppBar>
 
 
@@ -297,55 +360,57 @@ function App() {
         >
           <div className={classes.toolbar}>
           </div>
-          
-            <List>
+
+          <List>
             {routeGroups.map(routeGroup => (
               <>
                 {(routeGroup.name && open) && <Typography className={classes.text} variant="p">{routeGroup.name}</Typography>}
 
-                
-                  {
-                    routeGroup.items.map((route, index) => (
-                      (open||route.onClose)&&
+
+                {
+                  routeGroup.items.map((route, index) => (
+                    (open || route.onClose) &&
+                    <Tooltip title={open ? '' : route.name}>
                       <ListItem button key={route.name}>
                         <ListItemIcon>{route.icon && route.icon}</ListItemIcon>
                         <ListItemText primary={route.name} />
                       </ListItem>
-                    ))
-                  }
-                  {open&&<Divider  className={classes.divider}/>}
-                
-                
+                    </Tooltip>
+                  ))
+                }
+                {open && <Divider className={classes.divider} />}
+
+
               </>
             ))}
-            </List>
+          </List>
+
+          {
+            open &&
+            <div className={classes.drawerContainer}>
+              {
+                footer.map(footerItems => (
+                  footerItems.map(item =>
+                    <a className={classes.a} href={item.url}>{item.name}</a>
+                  )
+                ))
+              }
+              <p style={{ fontWeight: 200 }}>© 2021 Google LLC</p>
+            </div>
+          }
+
 
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-            facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-            gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-            donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-            adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-            Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-            imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-            arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
-        </Typography>
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-            facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-            tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-            consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-            vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-            hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-            tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-            nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+
+          <Grid xs={12} direction='row' container spacing={2}  justify="flex-start">
+            { 
+              [...Array(10).keys()].map( item => <Grid item xl={3} lg={4} md={4} sm={6} xs={12} ><PreviewCard /></Grid>) 
+            }
+
+          </Grid>
+
         </main>
       </div>
     </ThemeProvider>
