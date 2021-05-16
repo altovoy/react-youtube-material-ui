@@ -406,7 +406,21 @@ function App() {
 
           <Grid xs={12} direction='row' container spacing={2}  justify="flex-start">
             { 
-              [...Array(10).keys()].map( item => <Grid item xl={3} lg={4} md={4} sm={6} xs={12} ><PreviewCard /></Grid>) 
+              [...Array(10).keys()].map( item => 
+              <Grid item xl={3} lg={4} md={4} sm={6} xs={12} >
+                <PreviewCard 
+                  videoImg="https://i.ytimg.com/vi/nsHRc8tUIK0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-Te-F216hloej-awOneOVkI-WlQ"
+                  time="3:12"
+                  progress={0}
+                  title="OMIDO - LSD (ft. palfii) (Official Music Video)"
+                  channelName="Trap Station"
+                  channelImg="https://yt3.ggpht.com/ytc/AAUvwni2J7CPzmLvcuURRHJLqF5JRa3olKu-rrDu1y_TUg=s68-c-k-c0x00ffffff-no-rj"
+                  channelUrl="https://www.youtube.com/user/TRAPSTATlON"
+                  timeAgo="1 año"
+                  verified
+                  views="7,2M"
+                />
+                </Grid>) 
             }
 
           </Grid>
