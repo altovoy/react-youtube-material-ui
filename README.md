@@ -7,10 +7,10 @@ If you want to see the result, visit [React Youtube Clone](https://yout-react.we
 # PREVIEW
 
 ## Desktop version
-![plot](preview/react-youtube-desktop.png)
+![plot](./preview/react-youtube-desktop.PNG)
 
 ## Mobile version
-![plot](preview/react-youtube-mobile.png)
+![plot](./preview/react-youtube-mobile.PNG)
 
 
 # HOW TO TEST IN YOUR PC
