@@ -1,5 +1,4 @@
 import React from 'react'
-
 import theme from './theme.js'
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,17 +16,22 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
 import SearchIcon from '@material-ui/icons/Search';
 
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-
 import MicIcon from '@material-ui/icons/Mic';
 import AppsIcon from '@material-ui/icons/Apps';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
+
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import FolderIcon from '@material-ui/icons/Folder';
+import RestoreIcon from '@material-ui/icons/Restore';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 import { Avatar, Icon, SvgIcon, TextField, Button, ButtonGroup, IconButton, Tooltip, Grid, Chip } from '@material-ui/core'
 
@@ -35,8 +39,19 @@ import PreviewCard from './components/PreviewCard.jsx'
 import { ReactComponent as StreamingIcon } from './icons/streaming_icon.svg'
 
 
-import {footer, chipList, routeGroups} from './dataTest'
+import { footer, chipList, routeGroups } from './dataTest'
 
+import { Slide, useScrollTrigger } from "@material-ui/core"
+const HideOnScroll = ({ children }) => {
+  const trigger = useScrollTrigger()
+  const width = window.innerWidth;
+  let isMobile = (width <= 768);
+  return (
+    <Slide appear={false} direction="down" in={!(trigger&&isMobile)}>
+      {children}
+    </Slide>
+  )
+}
 
 const drawerWidth = 260;
 
@@ -93,11 +108,6 @@ const useStyles = makeStyles(() => ({
     position: 'fixed',
     top: 'auto',
     paddingBottom: '5%'
-  },
-  '@media screen and (max-width: 600px)': {
-    drawer: {
-      display: 'none',
-    },
   },
   drawerOpen: {
     width: drawerWidth,
@@ -198,8 +208,55 @@ const useStyles = makeStyles(() => ({
     borderLeft: 'none',
     borderRight: 'none',
     zIndex: '2',
-    
+
+  },
+  bottomNavigation: {
+    display: 'none',
   }
+
+  , '@media screen and (max-width: 450px)': {
+    micIcon: {
+      display: 'none'
+    },
+    toolbar: {
+      padding: 0
+    },
+    content: {
+      pading: '80px 0'
+    }
+  },
+  '@media screen and (max-width: 768px)': {
+    appBarFit: {
+      marginLeft: 0,
+      left: 0
+    },
+    appBarShift: {
+      width: '100%',
+      marginLeft: 0,
+      left: 0
+    },
+    drawer: {
+      display: 'none',
+    },
+    rightButtons: {
+      display: 'none',
+    },
+    menuButton: {
+      display: 'none',
+    },
+    chipsContainer: {
+      margin: 0
+    },
+    bottomNavigation: {
+      display: 'flex',
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      width: '100%'
+    }
+
+  },
 }));
 
 
@@ -223,68 +280,73 @@ function App() {
       <CssBaseline />
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          elevation={0}
-          className={classes.appBar}
-        >
-          <Toolbar >
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={open ? handleDrawerClose : handleDrawerOpen}
-              edge="start"
-              className={classes.menuButton}
-            ><MenuIcon /></IconButton>
-            <div className={classes.toolbar}>
+        <HideOnScroll>
 
-              <img className={classes.imageIcon} src={"images/youtube-icon.svg"} />
-              <div>
-                <ButtonGroup disableElevation>
-                  <TextField className={classes.searchField}
-                    id="searchField"
-                    color="secondary"
-                    placeholder="Buscar"
-                    variant="outlined"
-                  />
-                  <Button className={classes.searchButton} variant="contained" >
-                    <SearchIcon />
-                  </Button>
 
-                </ButtonGroup>
-                <Tooltip title="Haz búsquedas por voz">
-                  <IconButton>
-                    <MicIcon />
-                  </IconButton>
-                </Tooltip>
+          <AppBar
+            position="fixed"
+            elevation={0}
+            className={classes.appBar}
+          >
+            <Toolbar >
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={open ? handleDrawerClose : handleDrawerOpen}
+                edge="start"
+                className={classes.menuButton}
+              ><MenuIcon /></IconButton>
+              <div className={classes.toolbar}>
+
+                <img className={classes.imageIcon} src={"images/youtube-icon.svg"} />
+                <div>
+                  <ButtonGroup disableElevation>
+                    <TextField className={classes.searchField}
+                      id="searchField"
+                      color="secondary"
+                      placeholder="Buscar"
+                      variant="outlined"
+                    />
+                    <Button className={classes.searchButton} variant="contained" >
+                      <SearchIcon />
+                    </Button>
+
+                  </ButtonGroup>
+                  <Tooltip className={classes.micIcon} title="Haz búsquedas por voz">
+                    <IconButton>
+                      <MicIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div className={classes.rightButtons}>
+                    <Tooltip title="Crear">
+                      <IconButton>
+                        <VideoCallIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Aplicaciones de YouTube">
+                      <IconButton>
+                        <AppsIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Notificaciones">
+                      <IconButton>
+                        <NotificationsIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                  <Avatar>E</Avatar>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Tooltip title="Crear">
-                  <IconButton>
-                    <VideoCallIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Aplicaciones de YouTube">
-                  <IconButton>
-                    <AppsIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Notificaciones">
-                  <IconButton>
-                    <NotificationsIcon />
-                  </IconButton>
-                </Tooltip>
-                <Avatar>E</Avatar>
-              </div>
-            </div>
-
-          </Toolbar>
+            </Toolbar>
 
 
 
-        </AppBar>
-
+          </AppBar>
+        </HideOnScroll>
         <div>
           <div className={classes.toolbar} >
           </div>
@@ -330,26 +392,33 @@ function App() {
 
 
         <main >
-          <div className={clsx(classes.appBar, { [classes.appBarShift]: open,
-                                                  [classes.appBarFit]: !open })}
+          <div className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+            [classes.appBarFit]: !open
+          })}
             style={{ position: "fixed", zIndex: 2, background: 'none' }}>
             <div className={classes.toolbar} />
-            <div className={clsx(classes.chipsContainer)} >
+            <HideOnScroll>
 
-              {chipList.map(chipItem =>
-                <Chip label={chipItem.name}
-                  component="a"
-                  href="#chip"
-                  clickable
-                  style={{marginLeft: '5px'}}
+              <div className={clsx(classes.chipsContainer)} >
+
+                {chipList.map(chipItem =>
+                  <Chip label={chipItem.name}
+                    component="a"
+                    href="#chip"
+                    clickable
+                    style={{ marginLeft: '5px' }}
                   />
-              )}
-               
-            </div>
+                )}
+
+              </div>
+            </HideOnScroll>
           </div>
 
           <div className={classes.content}>
+          <HideOnScroll>
             <div className={classes.toolbar} />
+            </HideOnScroll>
             <Grid xs={12} direction='row' container spacing={2} justify="flex-start">
               {
                 [...Array(20).keys()].map(item =>
@@ -373,6 +442,14 @@ function App() {
 
           </div>
         </main>
+        <BottomNavigation showLabels
+          className={classes.bottomNavigation}>
+          {
+            routeGroups.map(routeGroup => routeGroup.items.map(route =>
+              route.onClose && <BottomNavigationAction label={route.name} value="favorites" icon={route.icon} />
+            ))
+          }
+        </BottomNavigation>
       </div>
     </ThemeProvider>
   );
