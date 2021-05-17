@@ -18,25 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
-import HomeIcon from '@material-ui/icons/Home';
-import ExploreIcon from '@material-ui/icons/Explore';
-import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
-import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
-import YouTubeIcon from '@material-ui/icons/YouTube';
-import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
-import LiveTvIcon from '@material-ui/icons/LiveTv';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import SportsBasketballIcon from '@material-ui/icons/SportsBasketball';
-import HistoryIcon from '@material-ui/icons/History';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-import WatchLaterIcon from '@material-ui/icons/WatchLater';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import SearchIcon from '@material-ui/icons/Search';
-import SettingsIcon from '@material-ui/icons/Settings';
-import FlagIcon from '@material-ui/icons/Flag';
-import HelpIcon from '@material-ui/icons/Help';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
 
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -47,106 +29,13 @@ import AppsIcon from '@material-ui/icons/Apps';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 
-import { Avatar, Icon, SvgIcon, TextField, Button, ButtonGroup, IconButton, Tooltip, Grid } from '@material-ui/core'
-
-
-
-
+import { Avatar, Icon, SvgIcon, TextField, Button, ButtonGroup, IconButton, Tooltip, Grid, Chip } from '@material-ui/core'
 
 import PreviewCard from './components/PreviewCard.jsx'
 import { ReactComponent as StreamingIcon } from './icons/streaming_icon.svg'
-import { PlaylistPlay } from '@material-ui/icons';
-const routeGroups = [
-  {
-    name: null, items: [
-      { name: 'Inicio', icon: <HomeIcon />, onClose: true },
-      { name: 'Explorar', icon: <ExploreIcon />, onClose: true },
-      { name: 'Subscripciones', icon: <SubscriptionsIcon />, onClose: true },
-    ]
-  },
-  {
-    name: null, max: 5, items: [
-      { name: 'Bibliotecas', icon: <VideoLibraryIcon />, onClose: true },
-      { name: 'Historial', icon: <HistoryIcon /> },
-      { name: 'Mis videos', icon: <PlayCircleOutlineIcon /> },
-      { name: 'Ver más tarde', icon: <WatchLaterIcon /> },
-      { name: 'Videos que me gustan', icon: <ThumbUpIcon /> },
-      { name: 'Lista de reproducción', icon: <PlaylistPlay /> }
-    ]
-  },
-  {
-    name: "SUBSCRIPCIONES", max: 7, items: [
-      {
-        name: 'Kiko Palomares', streaming: true,
-        icon: <Avatar alt="Remy Sharp" src="https://yt3.ggpht.com/ytc/AAUvwnhl30-099hHdQ9KmQSG1ZZN6ReuwHC1zG3EC6m65A=s88-c-k-c0x00ffffff-no-rj" />
-      },
-      {
-        name: 'Sofia Web',
-        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnimRjgF1uVE0ukK6xy3h9HGMHMjKy6QzmKOUNeCJA=s88-c-k-c0x00ffffff-no-rj' />
-      },
-      {
-        name: 'The Flutter way',
-        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwngOS8ETkWL7RrYwfXX2hMdJ7VjO-juYYl8F1OG1=s88-c-k-c0x00ffffff-no-rj' />
-      },
-      {
-        name: 'Ed Team',
-        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhRL1PzyIR4qftWnofOtsyvheGq_wQpMe1XVOJ7YQ=s88-c-k-c0x00ffffff-no-rj' />
-      },
-      {
-        name: 'Fazt', newContent: true,
-        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhgqDwiewt8bds92auC2W30pzE70V03dTW7_h8tvQ=s88-c-k-c0x00ffffff-no-rj' />,
-      },
-      {
-        name: 'AristiDevs', streaming: true,
-        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhXywyYrVckna4WxxOWfQLn_Ki2FhmHNWb5HHpL=s88-c-k-c0x00ffffff-no-rj' />
-      },
-      {
-        name: 'MoureDev', newContent: true,
-        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwniUE19__jnSP8NH1LblvE5Ac5ADuDfcDMh9F-v7Bg=s88-c-k-c0x00ffffff-no-rj' />
-      },
-      { name:'Duke Doks',
-        icon: <Avatar src='https://yt3.ggpht.com/ytc/AAUvwnhmw1s-0Qh89Gy8U2u4M5JSh5rtIeaRMb2cNsUwsw=s88-c-k-c0x00ffffff-no-rj' />  
-      }
-    ]
-  },
-  {
-    name: "MÁS DE YOUTUBE", items: [
-      { name: 'Youtube Premium', icon: <YouTubeIcon /> },
-      { name: 'Videojuegos', icon: <VideogameAssetIcon /> },
-      { name: 'Directo', icon: <LiveTvIcon /> },
-      { name: 'Aprendizaje', icon: <EmojiObjectsIcon /> },
-      { name: 'Deportes', icon: <SportsBasketballIcon /> }
-    ]
-  },
-  {
-    name: null, items: [
-      { name: 'Configuración', icon: <SettingsIcon /> },
-      { name: 'Historial de denuncias', icon: <FlagIcon /> },
-      { name: 'Ayuda', icon: <HelpIcon /> },
-      { name: 'Enviar sugerencias', icon: <AnnouncementIcon /> },
-    ]
-  }
-]
 
-const footer = [
-  [
-    { name: 'Información', url: 'https://www.youtube.com/about/' },
-    { name: 'Prensa', url: 'https://www.youtube.com/about/press/' },
-    { name: 'Derechos de autor', url: 'https://www.youtube.com/about/copyright/' },
-    { name: 'Contactar', url: 'https://www.youtube.com/t/contact_us/' },
-    { name: 'Creadores', url: 'https://www.youtube.com/creators/' },
-    { name: 'Publicidad', url: 'https://www.youtube.com/ads/' },
-    { name: 'Desarrolladores', url: 'https://developers.google.com/youtube' }
-  ],
-  [
-    { name: 'Términos', url: 'https://www.youtube.com/t/terms' },
-    { name: 'Privacidad', url: 'https://policies.google.com/privacy?hl=es' },
-    { name: 'Política y seguridad', url: 'https://policies.google.com/privacy?hl=es' },
-    { name: 'Cómo funciona YouTube', url: 'https://www.youtube.com/howyoutubeworks?utm_campaign=ytgen&utm_source=ythp&utm_medium=LeftNav&utm_content=txt&u=https%3A%2F%2Fwww.youtube.com%2Fhowyoutubeworks%3Futm_source%3Dythp%26utm_medium%3DLeftNav%26utm_campaign%3Dytgen' },
-    { name: 'Probar funciones nuevas', url: 'https://www.youtube.com/new' }
-  ]
-]
 
+import {footer, chipList, routeGroups} from './dataTest'
 
 
 const drawerWidth = 260;
@@ -170,13 +59,11 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
   },
   appBar: {
-    background: '#202020',
+    background: 'rgba(32, 32, 32, 0.95)',
     zIndex: theme.zIndex.drawer + 1,
     width: '100%',
-    position: 'fixed',
     top: 0,
     left: 0,
-
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -185,10 +72,6 @@ const useStyles = makeStyles(() => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-  },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
   },
   menuButton: {
     marginRight: 10,
@@ -201,12 +84,15 @@ const useStyles = makeStyles(() => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
     borderRight: 'none',
-    ['& paper']: {
-      borderRight: 'none'
-    },
     ['& slide']: {
       borderRight: 'none'
     },
+  },
+  paper: {
+    borderRight: 'none',
+    position: 'fixed',
+    top: 'auto',
+    paddingBottom: '5%'
   },
   '@media screen and (max-width: 600px)': {
     drawer: {
@@ -242,7 +128,7 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: '80px ' + theme.spacing(3) + 'px',
   },
   imageIcon: {
     height: '25px'
@@ -292,8 +178,27 @@ const useStyles = makeStyles(() => ({
     display: 'block'
   },
   drawerContainer: { margin: '5% 16px' },
+  appBarFit: {
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: theme.spacing(7) + 1,
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(9) + 1,
+    },
+  },
   chipsContainer: {
-    height: '30px'
+    height: '56px',
+    background: 'rgba(32, 32, 32, 0.95)',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 30px',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderLeft: 'none',
+    borderRight: 'none',
+    zIndex: '2',
+    
   }
 }));
 
@@ -376,75 +281,97 @@ function App() {
 
           </Toolbar>
 
-          {
-            //<div className={clsx(classes.chipsContainer, {[classes.appBarShift]: open})} />
-          }
+
 
         </AppBar>
 
+        <div>
+          <div className={classes.toolbar} >
+          </div>
 
-        <Drawer
-          variant="permanent"
-          className={clsx(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx({
+          <Drawer
+            variant="permanent"
+            className={clsx(classes.drawer, {
               [classes.drawerOpen]: open,
               [classes.drawerClose]: !open,
-            }),
-          }}
-        >
-          <div className={classes.toolbar}>
-          </div>
-          <List>
-            {
-              routeGroups.map(routeGroup => (
-                <NavItems routeGroup={routeGroup} open={open} />
-              ))
-            }
-          </List>
-          {
-            open &&
-            <div className={classes.drawerContainer}>
+            })}
+            classes={{
+              paper: clsx(classes.paper, {
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              }),
+            }}
+          >
+            <List>
               {
-                footer.map(footerItems => (
-                  footerItems.map(item =>
-                    <a className={classes.a} href={item.url}>{item.name}</a>
-                  )
+                routeGroups.map(routeGroup => (
+                  <NavItems routeGroup={routeGroup} open={open} />
                 ))
               }
-              <p style={{ fontWeight: 200 }}>© 2021 Google LLC</p>
-            </div>
-          }
-
-
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-
-          <Grid xs={12} direction='row' container spacing={2} justify="flex-start">
+            </List>
             {
-              [...Array(10).keys()].map(item =>
-                <Grid item xl={3} lg={4} md={4} sm={6} xs={12} >
-                  <PreviewCard
-                    videoImg="https://i.ytimg.com/vi/nsHRc8tUIK0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-Te-F216hloej-awOneOVkI-WlQ"
-                    time="3:12"
-                    progress={0}
-                    title="OMIDO - LSD (ft. palfii) (Official Music Video)"
-                    channelName="Trap Station"
-                    channelImg="https://yt3.ggpht.com/ytc/AAUvwni2J7CPzmLvcuURRHJLqF5JRa3olKu-rrDu1y_TUg=s68-c-k-c0x00ffffff-no-rj"
-                    channelUrl="https://www.youtube.com/user/TRAPSTATlON"
-                    timeAgo="1 año"
-                    verified
-                    views="7,2M"
-                  />
-                </Grid>)
+              open &&
+              <div className={classes.drawerContainer}>
+                {
+                  footer.map(footerItems => (
+                    footerItems.map(item =>
+                      <a className={classes.a} href={item.url}>{item.name}</a>
+                    )
+                  ))
+                }
+                <p style={{ fontWeight: 200 }}>© 2021 Google LLC</p>
+              </div>
             }
 
-          </Grid>
 
+          </Drawer>
+
+        </div>
+
+
+        <main >
+          <div className={clsx(classes.appBar, { [classes.appBarShift]: open,
+                                                  [classes.appBarFit]: !open })}
+            style={{ position: "fixed", zIndex: 2, background: 'none' }}>
+            <div className={classes.toolbar} />
+            <div className={clsx(classes.chipsContainer)} >
+
+              {chipList.map(chipItem =>
+                <Chip label={chipItem.name}
+                  component="a"
+                  href="#chip"
+                  clickable
+                  style={{marginLeft: '5px'}}
+                  />
+              )}
+               
+            </div>
+          </div>
+
+          <div className={classes.content}>
+            <div className={classes.toolbar} />
+            <Grid xs={12} direction='row' container spacing={2} justify="flex-start">
+              {
+                [...Array(20).keys()].map(item =>
+                  <Grid item xl={3} lg={4} md={4} sm={6} xs={12} >
+                    <PreviewCard
+                      videoImg="https://i.ytimg.com/vi/nsHRc8tUIK0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-Te-F216hloej-awOneOVkI-WlQ"
+                      time="3:12"
+                      progress={0}
+                      title="OMIDO - LSD (ft. palfii) (Official Music Video)"
+                      channelName="Trap Station"
+                      channelImg="https://yt3.ggpht.com/ytc/AAUvwni2J7CPzmLvcuURRHJLqF5JRa3olKu-rrDu1y_TUg=s68-c-k-c0x00ffffff-no-rj"
+                      channelUrl="https://www.youtube.com/user/TRAPSTATlON"
+                      timeAgo="1 año"
+                      verified
+                      views="7,2M"
+                    />
+                  </Grid>)
+              }
+
+            </Grid>
+
+          </div>
         </main>
       </div>
     </ThemeProvider>
@@ -496,7 +423,7 @@ function NavItems({ open, routeGroup }) {
         (open && overItems > 0) &&
         <ListItem button onClick={() => { setShowingAll(!showingAll) }} >
           <ListItemIcon>{showingAll ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
-          <ListItemText  primaryTypographyProps={{noWrap:true}} primary={"Mostrar " + (showingAll ? " menos" : overItems.toString() + " más")}/>
+          <ListItemText primaryTypographyProps={{ noWrap: true }} primary={"Mostrar " + (showingAll ? " menos" : overItems.toString() + " más")} />
         </ListItem>
       }
 
