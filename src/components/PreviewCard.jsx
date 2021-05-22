@@ -26,8 +26,14 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             "& $actionsContainer": {
                 display: 'flex'
+            },
+            "& $moreIcon": {
+                display: 'block'
             }
         }
+    },
+    moreIcon:{
+        display: 'none'
     },
     image: {
         display: 'block',
@@ -181,16 +187,17 @@ export default function PreviewCard(
                     <Typography className={classes.secondaryText}
                         variant='body2'
                         component='p'>
-                        {views + " de visualizaciones"}
+                        {views + " visualizaciones"}
                         {" · hace " + timeAgo}
                     </Typography >
                 </div>
                 <div>
                     <IconButton onClick={handleClick} style={{
                         padding: 0,
-                        background: 'none'
+                        background: 'none',
+                        width: '30px'
                     }}  >
-                        <MoreVertIcon className={clsx(classes.link, classes.secondaryText)} />
+                        <MoreVertIcon className={clsx(classes.link, classes.secondaryText, classes.moreIcon)} />
                     </IconButton>
 
                     <Menu
