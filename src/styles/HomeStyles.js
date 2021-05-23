@@ -42,6 +42,7 @@ const HomeStyles = makeStyles(() => ({
       display: 'none',
     },
     drawer: {
+      gridArea: 'drawer',
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',

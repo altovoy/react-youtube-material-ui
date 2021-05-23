@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import clsx from 'clsx';
 import theme from './theme.js'
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 // Icons
@@ -16,13 +16,13 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 
 // Material components
 import { Drawer, List } from '@material-ui/core'
-import { AppBar, Toolbar, BottomNavigation, BottomNavigationAction} from '@material-ui/core'
-import { Avatar,  TextField, Button, ButtonGroup, IconButton, Tooltip, Grid, Chip } from '@material-ui/core'
+import { AppBar, Toolbar, BottomNavigation, BottomNavigationAction } from '@material-ui/core'
+import { Avatar, TextField, Button, ButtonGroup, IconButton, Tooltip, Grid, Chip } from '@material-ui/core'
 
 // Data & utils
 import { footer, chipList, routeGroups } from './dummyNavData'
-import { videoList } from './dummyData'
-import { ytDuration2String, timeSince, notateNumber } from './utils'
+import { videoList as dummyVideoList} from './dummyData'
+import { apiResp2CardData, getVideoList, searchVideosByKeyword } from './utils'
 
 // Styles
 import HomeStyles from './styles/HomeStyles.js'
@@ -32,10 +32,26 @@ import NavItems from './components/NavItems.jsx'
 import PreviewCard from './components/PreviewCard.jsx'
 import HideOnScroll from './components/HideOnScroll.jsx'
 
+
 function App() {
+ 
+  return(
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Home />
+    </ThemeProvider>
+  )
+}
+
+export default App;
+
+
+function Home() {
   const classes = HomeStyles();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [videoList, setVideoList] = useState(apiResp2CardData(dummyVideoList))
+  const [keyword, setKeyword] = useState('AT-Robótica')
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -45,9 +61,35 @@ function App() {
     setOpen(false);
   };
 
+  const handleChangeForm = (e) => {
+    setKeyword(e)
+  }
+
+  const setVL = (list) => {
+    setVideoList(apiResp2CardData(list))
+  }
+
+  useEffect(()=>{
+    getVideos()
+  }, [])
+
+  const getVideos = async() => {
+    try{
+      const response = await getVideoList(15)
+      setVL(response.data)
+    }catch(err){}
+  }
+
+  const onSearchClick = async(e) => {
+    e.preventDefault()
+    try{
+      const response = await searchVideosByKeyword(keyword)
+      setVL(response.data)
+    }catch(err){}
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    
       <div className={classes.root}>
         <CssBaseline />
         <HideOnScroll>
@@ -76,8 +118,12 @@ function App() {
                       color="secondary"
                       placeholder="Buscar"
                       variant="outlined"
+                      name='keyword' 
+                      onChange={(e) => {handleChangeForm (e.target.value)} }
                     />
-                    <Button className={classes.searchButton} variant="contained" >
+                    <Button className={classes.searchButton} 
+                    onClick={onSearchClick}
+                    variant="contained" >
                       <SearchIcon />
                     </Button>
 
@@ -190,13 +236,8 @@ function App() {
             </HideOnScroll>
             <Grid xs={12} direction='row' container spacing={2} justify="flex-start">
               {
-                videoList.items.map(video => {
-                  const { snippet, statistics, contentDetails } = video
-                  const { title, publishedAt, thumbnails, channelTitle } = snippet
-                  const img = thumbnails.medium.url
-                  const { viewCount } = statistics
-                  let { duration } = contentDetails  // Structure: PT3M3S
-                  duration = ytDuration2String(duration)
+                videoList.map(video => {
+                  const {img, duration, title, channelTitle, timeAgo, views} = video
                   return (<Grid item xl={3} lg={4} md={4} sm={6} xs={12} >
                     <PreviewCard
                       videoImg={img}
@@ -206,9 +247,9 @@ function App() {
                       channelName={channelTitle}
                       channelImg="https://yt3.ggpht.com/ytc/AAUvwni2J7CPzmLvcuURRHJLqF5JRa3olKu-rrDu1y_TUg=s68-c-k-c0x00ffffff-no-rj"
                       channelUrl="https://www.youtube.com/user/TRAPSTATlON"
-                      timeAgo={timeSince(publishedAt)}
+                      timeAgo={timeAgo}
                       verified
-                      views={notateNumber(viewCount)}
+                      views={views}
                     />
                   </Grid>)
                 })
@@ -227,8 +268,5 @@ function App() {
           }
         </BottomNavigation>
       </div>
-    </ThemeProvider>
   );
 }
-
-export default App;

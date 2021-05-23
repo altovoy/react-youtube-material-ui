@@ -1,3 +1,4 @@
+import axios from 'axios'
 
 const ytDuration2String = (duration) => {
     // Structure: PT3M3S
@@ -48,11 +49,64 @@ const timeSince = (date) => {
 }
 
 const notateNumber = (number) => {
-    if(number >= 1000000){
-        return ((number/1000000).toFixed(1)+ 'M de').replace('.', ',')
+    if (number >= 1000000) {
+        return ((number / 1000000).toFixed(1) + 'M de').replace('.', ',')
     }
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    
+
 }
 
-export { ytDuration2String, timeSince, notateNumber }
+const apiResp2CardData = (videoList) => {
+    return videoList.items.map((video) => {
+        const { snippet, statistics, contentDetails } = video
+        const { title, publishedAt, thumbnails, channelTitle } = snippet
+        const img = thumbnails.medium.url
+        const { viewCount } = statistics || { viewCount: '' }
+        let { duration } = contentDetails || { duration: 'PT3M3S' }  // Structure: PT3M3S
+        duration = ytDuration2String(duration)
+        let timeAgo = timeSince(publishedAt)
+        let views = notateNumber(viewCount)
+        return { img, duration, title, channelTitle, timeAgo, views }
+    })
+}
+
+const YOUTUBE_DATA_API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY
+const YOUTUBE_DATA_API_BASE_URL = 'https://youtube.googleapis.com/youtube/v3'
+const baseVideoParams = {
+    regionCode: 'CO',
+    key: YOUTUBE_DATA_API_KEY,
+}
+
+const DEFAULT_MAX_RESULTS = 10
+
+const getVideoList = (maxResults) => {
+    return axios.get(`${YOUTUBE_DATA_API_BASE_URL}/videos/`, {
+        params: {
+            ...baseVideoParams,
+            part: 'snippet, contentDetails, statistics',
+            chart: 'mostPopular',
+            maxResults: maxResults || DEFAULT_MAX_RESULTS
+        }
+    })
+}
+
+const searchVideosByKeyword = (keyword, maxResults) => {
+    return axios.get(`${YOUTUBE_DATA_API_BASE_URL}/search/`, {
+        params: {
+            ...baseVideoParams,
+            part: 'snippet',
+            q: keyword || 'TRL7 AT-Robotica',
+            chart: 'mostPopular',
+            maxResults: maxResults || DEFAULT_MAX_RESULTS
+        }
+    })
+}
+
+export {
+    ytDuration2String,
+    timeSince,
+    notateNumber,
+    getVideoList,
+    searchVideosByKeyword,
+    apiResp2CardData
+}

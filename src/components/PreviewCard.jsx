@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         maxHeight: '200px',
         height: '100%',
-        contentFit: 'cover'
+        objectFit: 'cover'
     },
     title: {
         fontWeight: '600'
