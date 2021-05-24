@@ -163,7 +163,7 @@ const HomeStyles = makeStyles(() => ({
         padding: 0
       },
       content: {
-        pading: '80px 0'
+        padding: '80px 5px'
       }
     },
     '@media screen and (max-width: 768px)': {

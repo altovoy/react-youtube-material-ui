@@ -59,14 +59,14 @@ const notateNumber = (number) => {
 const apiResp2CardData = (videoList) => {
     return videoList.items.map((video) => {
         const { snippet, statistics, contentDetails } = video
-        const { title, publishedAt, thumbnails, channelTitle } = snippet
+        const { title, publishedAt, description, thumbnails, channelTitle } = snippet
         const img = thumbnails.medium.url
         const { viewCount } = statistics || { viewCount: '' }
         let { duration } = contentDetails || { duration: 'PT3M3S' }  // Structure: PT3M3S
         duration = ytDuration2String(duration)
         let timeAgo = timeSince(publishedAt)
         let views = notateNumber(viewCount)
-        return { img, duration, title, channelTitle, timeAgo, views }
+        return { img, duration, title, channelTitle, description, timeAgo, views }
     })
 }
 

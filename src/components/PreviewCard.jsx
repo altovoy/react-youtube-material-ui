@@ -15,13 +15,11 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import FlagIcon from '@material-ui/icons/Flag';
 
 
-import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText , Divider} from '@material-ui/core'
+import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Divider, Box } from '@material-ui/core'
 
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        maxWidth: '360px',
-        margin: 'auto',
         position: 'relative',
         "&:hover": {
             "& $actionsContainer": {
@@ -32,7 +30,17 @@ const useStyles = makeStyles((theme) => ({
             }
         }
     },
-    moreIcon:{
+    cardStandard: {
+        maxWidth: '360px',
+        margin: 'auto',
+
+    },
+    cardSearch: {
+        display: 'flex',
+        direction: 'row',
+        justifyContent: 'space-between'
+    },
+    moreIcon: {
         display: 'none'
     },
     image: {
@@ -41,10 +49,15 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         maxHeight: '200px',
         height: '100%',
-        objectFit: 'cover'
+
     },
     title: {
-        fontWeight: '600'
+        gridArea: 'title',
+        fontWeight: '600',
+        [theme.breakpoints.down('sm')]: {
+            lineClamp: 3
+        }
+
     },
     secondaryText: {
         color: '#A2A2A2'
@@ -54,9 +67,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'flex-start',
         width: '100%',
         justifyContent: 'space-between'
-    },
-    textContent: {
-        margin: '0 10px'
     },
     link: {
         '&:hover': {
@@ -87,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '1px',
         margin: '2px',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         "&:hover": {
             "& $actionLabel": {
                 display: 'block',
@@ -110,12 +120,67 @@ const useStyles = makeStyles((theme) => ({
         right: 0,
         width: '100%',
         margin: '0px'
+    },
+    noWrapLines: {
+        display: "-webkit-box",
+        boxOrient: "vertical",
+        lineClamp: 2,
+        wordBreak: "break-all",
+        overflow: "hidden"
+    },
+    description:{
+        gridArea: 'description',
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        }
+    },
+    views: {
+        gridArea: 'views'
+    },
+    channelImg: {
+        gridArea: 'channelImg',
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        }
+    },
+    channelName:{
+        gridArea: 'channelName',
+        margin: 'auto 0'
+    },
+    contentDetails: {
+        margin: '0 10px'
+    },
+    searchGrid: {
+        display: 'grid',
+        gridTemplateAreas:
+            `"title title"
+        "views views"
+        "channelImg channelName"
+        "description description"`,
+        gridTemplateColumns: '50px auto',
+        [theme.breakpoints.down('xs')]: {
+            gridTemplateAreas:
+            `"title title"
+        "views views"
+        "channelName channelName"`,
+        }
+    },
+    standardGrid: {
+        display: 'grid',
+        gridTemplateAreas:
+            `"channelImg title"
+            ". channelName"
+            ". views"`,
+        gridTemplateColumns: '50px auto',
+        gridGap: '5px'
     }
+
 
 }))
 
-export default function PreviewCard(
-    { videoImg, time, progress, title, channelName, channelUrl, channelImg, verified, views, timeAgo }) {
+export default function PreviewCard({
+    videoImg, time, progress, title, channelName, channelUrl,
+    channelImg, verified, views, timeAgo, description, searchVariant }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -127,27 +192,27 @@ export default function PreviewCard(
         setAnchorEl(null);
     };
     return (
-        <div className={classes.card}>
-            <div className={classes.actionsContainer} >
-                <div className={classes.action}>
-                    <Typography
-                        variant="body2"
-                        component="span"
-                        className={classes.actionLabel}>VER MÁS TARDE</Typography>
-                    <WatchLaterIcon />
-                </div>
+        <div className={clsx(classes.card, searchVariant ? classes.cardSearch : classes.cardStandard)}>
 
-                <div className={classes.action}>
-                    <Typography
-                        variant="body2"
-                        component="span"
-                        className={classes.actionLabel}>AÑADIR A LA COLA</Typography>
-                    <QueueIcon />
-                </div>
-
-            </div>
             <div style={{ position: 'relative', marginBottom: '5px' }}>
+                <div className={classes.actionsContainer} >
+                    <div className={classes.action}>
+                        <Typography
+                            variant="body2"
+                            component="span"
+                            className={classes.actionLabel}>VER MÁS TARDE</Typography>
+                        <WatchLaterIcon />
+                    </div>
 
+                    <div className={classes.action}>
+                        <Typography
+                            variant="body2"
+                            component="span"
+                            className={classes.actionLabel}>AÑADIR A LA COLA</Typography>
+                        <QueueIcon />
+                    </div>
+
+                </div>
                 <img className={classes.image} src={videoImg} />
                 <Typography className={classes.timeLabel}
                     variant="subtitle2"
@@ -160,17 +225,20 @@ export default function PreviewCard(
 
             </div>
             <div className={classes.flexCenter}>
-                <Tooltip title={channelName}>
-                    <Avatar src={channelImg} />
-                </Tooltip>
+                <div className={clsx(classes.contentDetails, searchVariant ? classes.searchGrid : classes.standardGrid)}>
 
-                <div className={classes.textContent}>
+
                     <Typography
+                        className={clsx(classes.noWrapLines, classes.title)}
                         variant='subtitle2'
                         component='h1'
                         href={channelUrl}
                     >{title}</Typography>
-                    <Link className={clsx(classes.link, classes.secondaryText)}
+                    <Tooltip className={classes.channelImg}
+                        title={channelName}>
+                        <Avatar src={channelImg} />
+                    </Tooltip>
+                    <Link className={clsx(classes.link, classes.channelName, classes.secondaryText)}
                         variant='body2' >{channelName}
                         {
                             verified &&
@@ -184,18 +252,30 @@ export default function PreviewCard(
                             </Tooltip>
                         }
                     </Link>
-                    <Typography className={classes.secondaryText}
+
+                    <Typography className={clsx(classes.views, classes.secondaryText)}
                         variant='body2'
                         component='p'>
                         {views + " visualizaciones"}
                         {" · hace " + timeAgo}
                     </Typography >
+                    {
+                        searchVariant &&
+                        <Box classes={{ root: clsx(classes.description, classes.noWrapLines, classes.secondaryText) }}
+                            fontSize='body2.fontSize'
+                            component='div'
+                        >
+                            {description}
+                        </Box>
+                    }
+
+
                 </div>
                 <div>
                     <IconButton onClick={handleClick} style={{
                         padding: 0,
                         background: 'none',
-                        width: '30px'
+                        width: '10px'
                     }}  >
                         <MoreVertIcon className={clsx(classes.link, classes.secondaryText, classes.moreIcon)} />
                     </IconButton>
@@ -217,7 +297,7 @@ export default function PreviewCard(
                         }}
                     >
 
-<MenuItem onClick={handleClose}>
+                        <MenuItem onClick={handleClose}>
                             <ListItemIcon><QueueIcon /></ListItemIcon>
                             <ListItemText>Añadir a la cola</ListItemText>
                         </MenuItem>
@@ -231,7 +311,7 @@ export default function PreviewCard(
                             <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
                             <ListItemText>Añadir a la lista de reproducción</ListItemText>
                         </MenuItem>
-                        
+
                         <Divider />
 
                         <MenuItem onClick={handleClose}>
@@ -248,7 +328,7 @@ export default function PreviewCard(
                             <ListItemIcon><FlagIcon /></ListItemIcon>
                             <ListItemText>Denunciar</ListItemText>
                         </MenuItem>
-                        
+
                     </Menu>
 
                 </div>

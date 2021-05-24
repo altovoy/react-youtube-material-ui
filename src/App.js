@@ -52,6 +52,7 @@ function Home() {
   const [open, setOpen] = useState(false);
   const [videoList, setVideoList] = useState(apiResp2CardData(dummyVideoList))
   const [keyword, setKeyword] = useState('AT-Robótica')
+  const [searching, setSearching] = useState(false)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -85,6 +86,7 @@ function Home() {
     try{
       const response = await searchVideosByKeyword(keyword)
       setVL(response.data)
+      setSearching(true)
     }catch(err){}
   }
 
@@ -234,11 +236,12 @@ function Home() {
             <HideOnScroll>
               <div className={classes.toolbar} />
             </HideOnScroll>
-            <Grid xs={12} direction='row' container spacing={2} justify="flex-start">
+            <Grid xs={12} direction='row' container spacing={2} justify={window.innerWidth<768?'center':"flex-start"}>
               {
                 videoList.map(video => {
-                  const {img, duration, title, channelTitle, timeAgo, views} = video
-                  return (<Grid item xl={3} lg={4} md={4} sm={6} xs={12} >
+                  const {img, duration, title, channelTitle, description, timeAgo, views} = video
+                  const {xl, lg, md, sm, xs} = searching?{xl:8, lg: 10, md:12, sm:12, xs:12}:{xl:3, lg:4, md:4, sm:6, xs:12}
+                  return (<Grid item xl={xl} lg={lg} md={md} sm={sm} xs={xs} >
                     <PreviewCard
                       videoImg={img}
                       time={duration}
@@ -248,8 +251,11 @@ function Home() {
                       channelImg="https://yt3.ggpht.com/ytc/AAUvwni2J7CPzmLvcuURRHJLqF5JRa3olKu-rrDu1y_TUg=s68-c-k-c0x00ffffff-no-rj"
                       channelUrl="https://www.youtube.com/user/TRAPSTATlON"
                       timeAgo={timeAgo}
-                      verified
                       views={views}
+                      description={description}
+                      verified
+                      searchVariant={searching}
+                      
                     />
                   </Grid>)
                 })
