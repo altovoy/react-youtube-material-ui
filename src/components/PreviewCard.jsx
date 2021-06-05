@@ -1,12 +1,14 @@
 import clsx from 'clsx';
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Avatar, Link, Tooltip } from '@material-ui/core'
+import { Typography, Avatar, Tooltip } from '@material-ui/core'
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import QueueIcon from '@material-ui/icons/Queue';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
+import { Link } from 'react-router-dom'
 
 // Side Menu Icons
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
@@ -56,7 +58,9 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '600',
         [theme.breakpoints.down('sm')]: {
             lineClamp: 3
-        }
+        },
+        color: 'inherit',
+        textDecoration: 'none'
 
     },
     secondaryText: {
@@ -128,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
         wordBreak: "break-all",
         overflow: "hidden"
     },
-    description:{
+    description: {
         gridArea: 'description',
         [theme.breakpoints.down('xs')]: {
             display: 'none'
@@ -143,7 +147,7 @@ const useStyles = makeStyles((theme) => ({
             display: 'none'
         }
     },
-    channelName:{
+    channelName: {
         gridArea: 'channelName',
         margin: 'auto 0'
     },
@@ -160,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
         gridTemplateColumns: '50px auto',
         [theme.breakpoints.down('xs')]: {
             gridTemplateAreas:
-            `"title title"
+                `"title title"
         "views views"
         "channelName channelName"`,
         }
@@ -179,7 +183,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function PreviewCard({
-    videoImg, time, progress, title, channelName, channelUrl,
+    id, videoImg, time, progress, title, channelName, channelUrl,
     channelImg, verified, views, timeAgo, description, searchVariant }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -193,6 +197,7 @@ export default function PreviewCard({
     };
     return (
         <div className={clsx(classes.card, searchVariant ? classes.cardSearch : classes.cardStandard)}>
+
 
             <div style={{ position: 'relative', marginBottom: '5px' }}>
                 <div className={classes.actionsContainer} >
@@ -213,7 +218,9 @@ export default function PreviewCard({
                     </div>
 
                 </div>
-                <img className={classes.image} src={videoImg} />
+                <Link to={`/video/${id}`} >
+                    <img className={classes.image} src={videoImg} />
+                </Link>
                 <Typography className={classes.timeLabel}
                     variant="subtitle2"
                     component='span'>{time}</Typography>
@@ -231,7 +238,8 @@ export default function PreviewCard({
                     <Typography
                         className={clsx(classes.noWrapLines, classes.title)}
                         variant='subtitle2'
-                        component='h1'
+                        to={`/video/${id}`}
+                        component={Link}
                         href={channelUrl}
                     >{title}</Typography>
                     <Tooltip className={classes.channelImg}
