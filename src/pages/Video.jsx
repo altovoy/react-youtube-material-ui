@@ -45,7 +45,7 @@ function Video() {
             variant='search'
         >
             <Grid container xs={12} justify='space-around'>
-                <Grid item xs={8}   >
+                <Grid item lg={8} md={8} xs={12}  >
 
                     <div
                         className={classes.videoContainer}>
@@ -58,7 +58,7 @@ function Video() {
                     </div>
                 </Grid>
 
-                <Grid item container xs={3} spacing={2}>
+                <Grid item container lg={4} md={4} xs={12} spacing={2}>
                     {
                         videoList.map(video => {
                             const { img, duration, title, channelTitle, description, timeAgo, views, id } = video

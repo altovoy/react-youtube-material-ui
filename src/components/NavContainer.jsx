@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx';
 
-import {useHistory} from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
 // Icons
 import MenuIcon from '@material-ui/icons/Menu';
@@ -30,7 +30,7 @@ import NavItems from './NavItems.jsx'
 import HideOnScroll from './HideOnScroll.jsx'
 
 
-function NavContainer({ variant, children}) {
+function NavContainer({ variant, children }) {
     const classes = HomeStyles();
     const history = useHistory()
     const [open, setOpen] = useState(true);
@@ -72,8 +72,9 @@ function NavContainer({ variant, children}) {
                             className={classes.menuButton}
                         ><MenuIcon /></IconButton>
                         <div className={classes.toolbar}>
-
-                            <img className={classes.imageIcon} src={"/images/youtube-icon.svg"} />
+                            <Link to='/'>
+                                <img className={classes.imageIcon} src={"/images/youtube-icon.svg"} />
+                            </Link>
                             <div>
                                 <ButtonGroup disableElevation>
                                     <TextField className={classes.searchField}
