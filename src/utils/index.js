@@ -63,14 +63,14 @@ const apiResp2CardData = (videoList) => {
 const api2card = (video) => {
     let { id, snippet, statistics, contentDetails } = video
     id = typeof (id) === 'string' ? id : id.videoId
-    const { title, publishedAt, description, thumbnails, channelTitle } = snippet
+    const { title, publishedAt, description, thumbnails, channelTitle, channelId } = snippet
     const img = thumbnails.medium.url
     const { viewCount, likeCount, dislikeCount } = statistics || { viewCount: '' }
     let { duration } = contentDetails || { duration: 'PT3M3S' }  // Structure: PT3M3S
     duration = ytDuration2String(duration)
     let timeAgo = timeSince(publishedAt)
     let views = notateNumber(viewCount)
-    return { img, duration, title, channelTitle, description, timeAgo, views, id, likeCount, dislikeCount, publishedAt }
+    return { img, duration, title, channelTitle, channelId, description, timeAgo, views, id, likeCount, dislikeCount, publishedAt }
 }
 
 const YOUTUBE_DATA_API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY
@@ -111,9 +111,32 @@ const getVideoInfo = (id) => {
         params: {
             ...baseVideoParams,
             part: 'snippet, contentDetails, statistics',
-            id: id||'zaxTotFnlNU&t'
+            id: id || 'zaxTotFnlNU&t'
         }
     })
+}
+
+const getChannelInfo = (id) => {
+    return axios.get(`${YOUTUBE_DATA_API_BASE_URL}/channels/`, {
+        params: {
+            ...baseVideoParams,
+            part: 'snippet, contentDetails, statistics',
+            id: id || 'UCplMvxeNhR6KFjFx05dbjSQ'
+        }
+    })
+}
+
+const apiChannelNormalize = (data) => {
+    if (data.items.length > 0) {
+        const channel = data.items[0]
+        const { snippet, statistics } = channel
+        let { title, description, customUrl, publishedAt, thumbnails } = snippet
+        const img = thumbnails.medium.url
+        const { viewCount, subscriberCount, hiddenSubscriberCount, videoCount } = statistics
+        return {title, description, customUrl, publishedAt, img, videoCount, subscriberCount, hiddenSubscriberCount, viewCount}
+    } else {
+        return {title: '', description: '', customUrl:'', publishedAt:'', img:'', videoCount:'', subscriberCount:'', hiddenSubscriberCount:'', viewCount:''}
+    }
 }
 
 export {
@@ -124,5 +147,7 @@ export {
     searchVideosByKeyword,
     getVideoInfo,
     apiResp2CardData,
-    api2card
+    api2card,
+    getChannelInfo,
+    apiChannelNormalize
 }

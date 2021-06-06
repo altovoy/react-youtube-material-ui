@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -9,7 +9,9 @@ import { apiResp2CardData, api2card, getVideoInfo } from '../utils'
 
 import { videoList as dummyVideoList } from '../dummyData'
 
-import { Grid, Typography, Tooltip, Button, IconButton, Divider } from '@material-ui/core'
+import Linkify from 'react-linkify'
+
+import { Grid, Typography, Tooltip, Button, IconButton, Divider, Collapse } from '@material-ui/core'
 
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
@@ -17,9 +19,14 @@ import ShareIcon from '@material-ui/icons/Share';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import PreviewCard from '../components/PreviewCard'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const useStyles = makeStyles({
+
+import PreviewCard from '../components/PreviewCard'
+import ChannelInfoBar from '../components/ChannelInfoBar'
+
+const useStyles = makeStyles( theme=> ({
     videoContainer: {
         position: "relative",
         paddingBottom: "56.25%" /* 16:9 */,
@@ -36,9 +43,14 @@ const useStyles = makeStyles({
     tags: {
     },
     videoDetails: {
-        margin: '10px 0 '
+        margin: '10px 0',
+        width: '100%'
+    },
+    descriptionContainer: {
+        width: '100%',
+        padding: `0 ${theme.spacing(8)}px`
     }
-})
+}))
 
 
 function Video() {
@@ -46,23 +58,30 @@ function Video() {
     const classes = useStyles()
 
     const { id } = useParams()
+    const [showDesc, setShowDesc] = useState(false)
 
-    const [video, setVideo] = useState ({tags: null, title: '', views: '', likeCount: 0, dislikeCount:0, publishedAt: new Date()})
-    const {tags, title, views, likeCount, dislikeCount, publishedAt} = video
+    const handleShowDescClick = e => {
+        e.preventDefault()
+        setShowDesc(!showDesc)
+    }
+
+    const [video, setVideo] = useState({ tags: null, title: '', views: '', likeCount: 0, description: '', dislikeCount: 0, publishedAt: new Date(), channelId: 'UCplMvxeNhR6KFjFx05dbjSQ' })
+    const { tags, title, views, likeCount, dislikeCount, publishedAt, channelId, description } = video
+    console.log(description)
     const dateString = new Date(publishedAt).toLocaleDateString("es-ES", { year: 'numeric', month: 'short', day: 'numeric' })
-    useEffect (() => {
+    useEffect(() => {
         getVideo()
     },
-    [id])
+        [id])
 
     const getVideo = async () => {
-        try{
+        try {
             const response = await getVideoInfo(id)
             const item = response.data.items.length > 0 && response.data.items[0]
-            if(item){
+            if (item) {
                 setVideo(api2card(item))
             }
-        }catch(error){
+        } catch (error) {
 
         }
     }
@@ -87,30 +106,30 @@ function Video() {
 
                     <div className={classes.videoDetails} >
                         <div className={classes.tags} > {
-                            tags&&tags.map(tag =>
+                            tags && tags.map(tag =>
                                 <Typography variant='body2' component='a' >{' #' + tag}</Typography>
                             )
                         }
                         </div>
 
-                        <Typography  variant='h6' component='p'  >{title}</Typography>
+                        <Typography variant='h6' component='p'  >{title}</Typography>
 
                         <Grid container xs={12} justify='space-between' alignItems='center' >
-                            <Grid item  md={4} xs={12}  >
+                            <Grid item md={4} xs={12}  >
                                 <Typography variant='subtile2' component='p' >{views + ' visualizaciones • ' + dateString}</Typography>
                             </Grid>
                             <Grid item container spacing={1} md={8} xs={12} justify='flex-end' alignItems='center' >
                                 <Grid item container xs={5} spacing={1} justify='space-between' className={classes.likes} >
                                     <Grid item xs={6}>
                                         <Tooltip title='Me gusta este video' >
-                                            <Button startIcon={<ThumbUpIcon/>}>
+                                            <Button startIcon={<ThumbUpIcon />}>
                                                 <Typography variant='subtile2' component='p' > {likeCount} </Typography>
                                             </Button>
                                         </Tooltip>
                                     </Grid>
                                     <Grid item xs={6}>
                                         <Tooltip title='No me gusta este video' >
-                                            <Button startIcon={<ThumbDownIcon/>}>
+                                            <Button startIcon={<ThumbDownIcon />}>
                                                 <Typography variant='subtile2' component='p' > {dislikeCount} </Typography>
                                             </Button>
                                         </Tooltip>
@@ -120,7 +139,7 @@ function Video() {
 
                                 <Grid item xs={3} >
                                     <Tooltip title='Compartir' >
-                                        <Button startIcon={<ShareIcon/>}>
+                                        <Button startIcon={<ShareIcon />}>
                                             <Typography variant='subtile2' component='p' > Compartir </Typography>
                                         </Button>
                                     </Tooltip>
@@ -128,7 +147,7 @@ function Video() {
 
                                 <Grid item xs={3} >
                                     <Tooltip title='Guardar' >
-                                        <Button startIcon={<PlaylistAddIcon/>}>
+                                        <Button startIcon={<PlaylistAddIcon />}>
                                             <Typography variant='subtile2' component='p' > Guardar </Typography>
                                         </Button>
                                     </Tooltip>
@@ -139,9 +158,34 @@ function Video() {
                                     </IconButton>
                                 </Grid>
                             </Grid>
-                            
+
                         </Grid>
                         <Divider />
+
+                        <ChannelInfoBar channelId={channelId} />
+
+                        <div className={classes.descriptionContainer}>
+                            <Collapse in={showDesc} collapsedHeight={'60px'} >
+                                <div >
+
+                                    <Linkify componentDecorator={componentDecorator}>
+                                        {description.split("\n").map(line =>
+                                            <Typography variant='body2' component='p' >{line}</Typography>
+                                        )}
+                                    </Linkify>
+
+                                </div>
+
+                            </Collapse>
+                            <Button onClick={handleShowDescClick} timeout='auto' endIcon={showDesc ? <ExpandLessIcon /> : <ExpandMoreIcon />} >
+                                {showDesc ? 'Mostrar menos' : 'Mostrar más'}
+                            </Button>
+                        </div>
+
+
+
+                        <Divider />
+
                     </div>
 
                 </Grid>
@@ -178,5 +222,11 @@ function Video() {
 
 
 }
+
+const componentDecorator = (href, text, key) => (
+    <a style={{color: '#3EA6F0', textDecoration: 'none'}} href={href} key={key} target="_blank">
+      {text}
+    </a>
+ );
 
 export default Video
