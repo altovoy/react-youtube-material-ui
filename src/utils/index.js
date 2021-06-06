@@ -57,18 +57,20 @@ const notateNumber = (number) => {
 }
 
 const apiResp2CardData = (videoList) => {
-    return videoList.items.map((video) => {
-        let { id, snippet, statistics, contentDetails } = video
-        id = typeof (id) === 'string' ? id : id.videoId
-        const { title, publishedAt, description, thumbnails, channelTitle } = snippet
-        const img = thumbnails.medium.url
-        const { viewCount } = statistics || { viewCount: '' }
-        let { duration } = contentDetails || { duration: 'PT3M3S' }  // Structure: PT3M3S
-        duration = ytDuration2String(duration)
-        let timeAgo = timeSince(publishedAt)
-        let views = notateNumber(viewCount)
-        return { img, duration, title, channelTitle, description, timeAgo, views, id }
-    })
+    return videoList.items.map((video) => api2card(video))
+}
+
+const api2card = (video) => {
+    let { id, snippet, statistics, contentDetails } = video
+    id = typeof (id) === 'string' ? id : id.videoId
+    const { title, publishedAt, description, thumbnails, channelTitle } = snippet
+    const img = thumbnails.medium.url
+    const { viewCount, likeCount, dislikeCount } = statistics || { viewCount: '' }
+    let { duration } = contentDetails || { duration: 'PT3M3S' }  // Structure: PT3M3S
+    duration = ytDuration2String(duration)
+    let timeAgo = timeSince(publishedAt)
+    let views = notateNumber(viewCount)
+    return { img, duration, title, channelTitle, description, timeAgo, views, id, likeCount, dislikeCount, publishedAt }
 }
 
 const YOUTUBE_DATA_API_KEY = process.env.REACT_APP_YOUTUBE_DATA_API_KEY
@@ -103,11 +105,24 @@ const searchVideosByKeyword = (keyword, maxResults) => {
     })
 }
 
+
+const getVideoInfo = (id) => {
+    return axios.get(`${YOUTUBE_DATA_API_BASE_URL}/videos/`, {
+        params: {
+            ...baseVideoParams,
+            part: 'snippet, contentDetails, statistics',
+            id: id||'zaxTotFnlNU&t'
+        }
+    })
+}
+
 export {
     ytDuration2String,
     timeSince,
     notateNumber,
     getVideoList,
     searchVideosByKeyword,
-    apiResp2CardData
+    getVideoInfo,
+    apiResp2CardData,
+    api2card
 }

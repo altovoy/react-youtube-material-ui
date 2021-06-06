@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 
 import { useParams } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles';
 import NavContainer from '../components/NavContainer';
 
-import { apiResp2CardData } from '../utils'
+import { apiResp2CardData, api2card, getVideoInfo } from '../utils'
 
 import { videoList as dummyVideoList } from '../dummyData'
 
-import { Grid } from '@material-ui/core'
+import { Grid, Typography, Tooltip, Button, IconButton, Divider } from '@material-ui/core'
+
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import ShareIcon from '@material-ui/icons/Share';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import PreviewCard from '../components/PreviewCard'
 
@@ -20,13 +26,18 @@ const useStyles = makeStyles({
         paddingTop: 25,
         height: 0
     },
-     videoFrame: {
+    videoFrame: {
         position: "absolute",
         top: 0,
         left: 0,
         width: "100%",
         height: "100%"
-     }
+    },
+    tags: {
+    },
+    videoDetails: {
+        margin: '10px 0 '
+    }
 })
 
 
@@ -35,30 +46,107 @@ function Video() {
     const classes = useStyles()
 
     const { id } = useParams()
-    const videoId = id||'1yqCFAfw_fs'
+
+    const [video, setVideo] = useState ({tags: null, title: '', views: '', likeCount: 0, dislikeCount:0, publishedAt: new Date()})
+    const {tags, title, views, likeCount, dislikeCount, publishedAt} = video
+    const dateString = new Date(publishedAt).toLocaleDateString("es-ES", { year: 'numeric', month: 'short', day: 'numeric' })
+    useEffect (() => {
+        getVideo()
+    },
+    [id])
+
+    const getVideo = async () => {
+        try{
+            const response = await getVideoInfo(id)
+            const item = response.data.items.length > 0 && response.data.items[0]
+            if(item){
+                setVideo(api2card(item))
+            }
+        }catch(error){
+
+        }
+    }
+
+    const videoId = id || '1yqCFAfw_fs'
     const [videoList, setVideoList] = useState(apiResp2CardData(dummyVideoList))
-
-
 
     return (
         <NavContainer
             variant='search'
         >
             <Grid container xs={12} justify='space-around'>
-                <Grid item lg={8} md={8} xs={12}  >
+                <Grid item lg={8} md={12} xs={12}  >
 
-                    <div
-                        className={classes.videoContainer}>
+                    <div className={classes.videoContainer}>
                         <iframe
                             className={classes.videoFrame}
                             src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
                             frameBorder="0"
                         />
-
                     </div>
+
+                    <div className={classes.videoDetails} >
+                        <div className={classes.tags} > {
+                            tags&&tags.map(tag =>
+                                <Typography variant='body2' component='a' >{' #' + tag}</Typography>
+                            )
+                        }
+                        </div>
+
+                        <Typography  variant='h6' component='p'  >{title}</Typography>
+
+                        <Grid container xs={12} justify='space-between' alignItems='center' >
+                            <Grid item  md={4} xs={12}  >
+                                <Typography variant='subtile2' component='p' >{views + ' visualizaciones • ' + dateString}</Typography>
+                            </Grid>
+                            <Grid item container spacing={1} md={8} xs={12} justify='flex-end' alignItems='center' >
+                                <Grid item container xs={5} spacing={1} justify='space-between' className={classes.likes} >
+                                    <Grid item xs={6}>
+                                        <Tooltip title='Me gusta este video' >
+                                            <Button startIcon={<ThumbUpIcon/>}>
+                                                <Typography variant='subtile2' component='p' > {likeCount} </Typography>
+                                            </Button>
+                                        </Tooltip>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Tooltip title='No me gusta este video' >
+                                            <Button startIcon={<ThumbDownIcon/>}>
+                                                <Typography variant='subtile2' component='p' > {dislikeCount} </Typography>
+                                            </Button>
+                                        </Tooltip>
+                                    </Grid>
+                                    <Divider />
+                                </Grid>
+
+                                <Grid item xs={3} >
+                                    <Tooltip title='Compartir' >
+                                        <Button startIcon={<ShareIcon/>}>
+                                            <Typography variant='subtile2' component='p' > Compartir </Typography>
+                                        </Button>
+                                    </Tooltip>
+                                </Grid>
+
+                                <Grid item xs={3} >
+                                    <Tooltip title='Guardar' >
+                                        <Button startIcon={<PlaylistAddIcon/>}>
+                                            <Typography variant='subtile2' component='p' > Guardar </Typography>
+                                        </Button>
+                                    </Tooltip>
+                                </Grid>
+                                <Grid item xs={1} >
+                                    <IconButton>
+                                        <MoreHorizIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                            
+                        </Grid>
+                        <Divider />
+                    </div>
+
                 </Grid>
 
-                <Grid item container lg={4} md={4} xs={12} spacing={2}>
+                <Grid item container lg={4} md={12} xs={12} spacing={2}>
                     {
                         videoList.map(video => {
                             const { img, duration, title, channelTitle, description, timeAgo, views, id } = video
